@@ -34,9 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var axios_1 = require("axios");
-var API_URL = 'http://localhost:8000/api';
+var API_URL = 'https://counter.market/api';
 var Requests = /** @class */ (function () {
     function Requests() {
     }
@@ -47,7 +47,7 @@ var Requests = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         url = API_URL + "/wallets/" + address + "/nonces";
-                        return [4 /*yield*/, axios_1.default.get(url, query)];
+                        return [4 /*yield*/, axios_1["default"].get(url, query)];
                     case 1: return [2 /*return*/, (_a.sent()).data];
                 }
             });
@@ -60,7 +60,7 @@ var Requests = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         url = API_URL + "/markets";
-                        return [4 /*yield*/, axios_1.default.get(url)];
+                        return [4 /*yield*/, axios_1["default"].get(url)];
                     case 1: return [2 /*return*/, (_a.sent()).data.items];
                 }
             });
@@ -73,7 +73,7 @@ var Requests = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         url = API_URL + "/tokens?format=hex";
-                        return [4 /*yield*/, axios_1.default.get(url)];
+                        return [4 /*yield*/, axios_1["default"].get(url)];
                     case 1: return [2 /*return*/, (_a.sent()).data.items];
                 }
             });
@@ -84,7 +84,7 @@ var Requests = /** @class */ (function () {
             var url;
             return __generator(this, function (_a) {
                 url = API_URL + "/orders?format=float";
-                return [2 /*return*/, axios_1.default.put(url, data)];
+                return [2 /*return*/, axios_1["default"].put(url, data)];
             });
         });
     };
@@ -93,13 +93,12 @@ var Requests = /** @class */ (function () {
             var url;
             return __generator(this, function (_a) {
                 url = API_URL + "/orders/" + id;
-                return [2 /*return*/, axios_1.default.delete(url, { data: data })];
+                return [2 /*return*/, axios_1["default"]["delete"](url, { data: data })];
             });
         });
     };
     // tslint:disable-next-line: max-line-length
     Requests.nonce = function (address, type) {
-        if (type === void 0) { type = 'trade'; }
         return __awaiter(this, void 0, void 0, function () {
             var nonces, tradeNonce;
             return __generator(this, function (_a) {
@@ -113,49 +112,49 @@ var Requests = /** @class */ (function () {
             });
         });
     };
-    Requests.withdraw = function (address, data) {
+    Requests.withdraw = function (args) {
         return __awaiter(this, void 0, void 0, function () {
             var url;
             return __generator(this, function (_a) {
-                url = API_URL + "/wallets/" + address + "/withdrawals";
-                return [2 /*return*/, axios_1.default.put(url, data)];
+                url = API_URL + "/wallets/" + args.address + "/withdrawals";
+                return [2 /*return*/, axios_1["default"].put(url, args)];
             });
         });
     };
-    Requests.balance = function (address, query) {
+    Requests.balance = function (address) {
         return __awaiter(this, void 0, void 0, function () {
             var url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = API_URL + "/wallets/" + address + "/token-accounts?format=float";
-                        return [4 /*yield*/, axios_1.default.get(url, query)];
+                        return [4 /*yield*/, axios_1["default"].get(url)];
                     case 1: return [2 /*return*/, (_a.sent()).data.items];
                 }
             });
         });
     };
-    Requests.orders = function (address, query) {
+    Requests.orders = function (address) {
         return __awaiter(this, void 0, void 0, function () {
             var url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = API_URL + "/wallets/" + address + "/orders?format=float";
-                        return [4 /*yield*/, axios_1.default.get(url, query)];
+                        return [4 /*yield*/, axios_1["default"].get(url)];
                     case 1: return [2 /*return*/, (_a.sent()).data.items];
                 }
             });
         });
     };
-    Requests.walletTrades = function (address, query) {
+    Requests.walletTrades = function (address) {
         return __awaiter(this, void 0, void 0, function () {
             var url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         url = API_URL + "/wallets/" + address + "/trades?format=float";
-                        return [4 /*yield*/, axios_1.default.get(url, query)];
+                        return [4 /*yield*/, axios_1["default"].get(url)];
                     case 1: return [2 /*return*/, (_a.sent()).data.items];
                 }
             });
@@ -164,4 +163,3 @@ var Requests = /** @class */ (function () {
     return Requests;
 }());
 exports.Requests = Requests;
-//# sourceMappingURL=request.js.map
