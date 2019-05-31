@@ -101,7 +101,7 @@ function withdraw(client, args) {
     });
 }
 exports.withdraw = withdraw;
-function fetchBalance(client) {
+function getBalance(client) {
     return __awaiter(this, void 0, void 0, function () {
         var address, tokenBalances;
         return __generator(this, function (_a) {
@@ -116,4 +116,4 @@ function fetchBalance(client) {
         });
     });
 }
-exports.fetchBalance = fetchBalance;
+exports.getBalance = getBalance;

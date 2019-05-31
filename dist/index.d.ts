@@ -1,13 +1,13 @@
-import { createOrder, cancelOrder, fetchOrders } from './counter/orders';
+import { placeOrder, cancelOrder, fetchOrders } from './counter/orders';
 import { fetchMyTrades } from './counter/trades';
-import { fetchBalance, withdraw } from './counter/balance';
+import { getBalance, withdraw } from './counter/balance';
 import PrivateKeyClient from './client/private_key';
 declare const _default: {
-    createOrder: typeof createOrder;
+    placeOrder: typeof placeOrder;
     cancelOrder: typeof cancelOrder;
     fetchOrders: typeof fetchOrders;
     fetchMyTrades: typeof fetchMyTrades;
-    fetchBalance: typeof fetchBalance;
+    getBalance: typeof getBalance;
     withdraw: typeof withdraw;
     PrivateKeyClient: typeof PrivateKeyClient;
 };

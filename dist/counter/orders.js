@@ -40,9 +40,9 @@ var bignumber_js_1 = require("bignumber.js");
 var config_1 = require("./../config");
 var requests_1 = require("../requests");
 var order_1 = require("./../models/order");
-function createOrder(client, args) {
+function placeOrder(client, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var CREATE_TITLE, address, markets, market, tokens, stockToken, tradeNonce, order, eip712, requestData;
+        var CREATE_TITLE, address, markets, market, tokens, stockToken, tradeNonce, order, signature, requestData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -108,7 +108,7 @@ function createOrder(client, args) {
                             }
                         })];
                 case 4:
-                    eip712 = _a.sent();
+                    signature = _a.sent();
                     requestData = {
                         type: args.type,
                         tradeNonce: tradeNonce,
@@ -119,10 +119,10 @@ function createOrder(client, args) {
                         makerFeeE5: config_1["default"].MAKER_FEE_E5,
                         takerFeeE5: config_1["default"].TAKER_FEE_E5,
                         maker: address,
-                        signature: eip712,
+                        signature: signature,
                         expiryTime: order.expiryTime
                     };
-                    return [4 /*yield*/, requests_1.Requests.createOrder(requestData)];
+                    return [4 /*yield*/, requests_1.Requests.placeOrder(requestData)];
                 case 5:
                     _a.sent();
                     return [2 /*return*/, order];
@@ -130,7 +130,7 @@ function createOrder(client, args) {
         });
     });
 }
-exports.createOrder = createOrder;
+exports.placeOrder = placeOrder;
 function cancelOrder(client, id) {
     return __awaiter(this, void 0, void 0, function () {
         var CANCEL_TITLE, signature;

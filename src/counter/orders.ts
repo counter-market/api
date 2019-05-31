@@ -7,7 +7,7 @@ import { Requests } from '../requests'
 
 import Order from './../models/order'
 
-export async function createOrder(client: Client, args: {
+export async function placeOrder(client: Client, args: {
   type: 'buy' | 'sell',
   stockAmount: number,
   cashPrice: number,
@@ -41,7 +41,7 @@ export async function createOrder(client: Client, args: {
   });
   order.setUniqueId(tradeNonce)
 
-  const eip712 = await client.signEIP712({
+  const signature = await client.signEIP712({
     types: {
       Message: [
         { name: 'title', type: 'string' },
@@ -84,11 +84,11 @@ export async function createOrder(client: Client, args: {
     makerFeeE5: Config.MAKER_FEE_E5,
     takerFeeE5: Config.TAKER_FEE_E5,
     maker: address,
-    signature: eip712,
+    signature,
     expiryTime: order.expiryTime
   };
 
-  await Requests.createOrder(requestData);
+  await Requests.placeOrder(requestData);
 
   return order
 }

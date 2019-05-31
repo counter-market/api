@@ -24,7 +24,7 @@ export class Requests {
     return (await axios.get(url)).data.items;
   }
 
-  public static async createOrder(data: any) {
+  public static async placeOrder(data: any) {
     const url = `${API_URL}/orders?format=float`;
     return axios.put(url, data);
   }

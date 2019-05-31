@@ -1,6 +1,6 @@
 import Client from '../client/client';
 import Order from './../models/order';
-export declare function createOrder(client: Client, args: {
+export declare function placeOrder(client: Client, args: {
     type: 'buy' | 'sell';
     stockAmount: number;
     cashPrice: number;

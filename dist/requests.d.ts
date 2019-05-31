@@ -7,9 +7,15 @@ export declare class Requests {
     static walletNonces(address: string, query?: any): Promise<any>;
     static markets(): Promise<Market[]>;
     static tokens(): Promise<Token[]>;
-    static createOrder(data: any): Promise<import("axios").AxiosResponse<any>>;
+    static placeOrder(data: any): Promise<import("axios").AxiosResponse<any>>;
     static cancelOrder(data: any, id: string): Promise<import("axios").AxiosResponse<any>>;
     static nonce(address: string, type: 'trade' | 'withdraw'): Promise<number>;
+    static deposit(args: {
+        addressHex: string;
+        tokenCode: number;
+        amountHex: number;
+        txHash: string;
+    }): Promise<import("axios").AxiosResponse<any>>;
     static withdraw(args: {
         address: string;
         tokenCode: number;

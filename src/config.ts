@@ -1,7 +1,7 @@
 const NETWORK_ID = 1
 const EXCHANGE_CONTRACT = '0xc0deee11aa091189fff0713353c43c7c8cae7881'
 const MAKER_FEE_E5 = 100
-const TAKER_FEE_E5 = 100
+const TAKER_FEE_E5 = 200
 const ORDER_TTL_IN_DAYS = 30
 
 export default {

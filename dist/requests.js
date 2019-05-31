@@ -79,7 +79,7 @@ var Requests = /** @class */ (function () {
             });
         });
     };
-    Requests.createOrder = function (data) {
+    Requests.placeOrder = function (data) {
         return __awaiter(this, void 0, void 0, function () {
             var url;
             return __generator(this, function (_a) {
@@ -109,6 +109,19 @@ var Requests = /** @class */ (function () {
                         tradeNonce = nonces[type];
                         return [2 /*return*/, tradeNonce];
                 }
+            });
+        });
+    };
+    Requests.deposit = function (args) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                url = API_URL + "/wallets/" + args.addressHex + "/withdrawals";
+                return [2 /*return*/, axios_1["default"].put(url, {
+                        tokenCode: args.tokenCode,
+                        amount: "0x" + args.amountHex,
+                        txHash: args.txHash
+                    })];
             });
         });
     };

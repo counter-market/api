@@ -4,4 +4,4 @@ export declare function withdraw(client: Client, args: {
     tokenSymbol: string;
     amount: number;
 }): Promise<void>;
-export declare function fetchBalance(client: Client): Promise<TokenBalance[]>;
+export declare function getBalance(client: Client): Promise<TokenBalance[]>;

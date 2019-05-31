@@ -61,7 +61,7 @@ export async function withdraw(client: Client, args: {
   });
 }
 
-export async function fetchBalance(client: Client): Promise<TokenBalance[]> {
+export async function getBalance(client: Client): Promise<TokenBalance[]> {
   const address = client.getAddress()
   const tokenBalances = await Requests.balance(address)
   return tokenBalances
