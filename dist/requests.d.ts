@@ -3,29 +3,51 @@ import Token from './models/token';
 import Trade from './models/trade';
 import TokenBalance from './models/token_balance';
 import Order from './models/order';
-export declare class Requests {
-    static walletNonces(address: string, query?: any): Promise<any>;
-    static markets(): Promise<Market[]>;
-    static tokens(): Promise<Token[]>;
-    static placeOrder(data: any): Promise<import("axios").AxiosResponse<any>>;
-    static cancelOrder(data: any, id: string): Promise<import("axios").AxiosResponse<any>>;
-    static nonce(address: string, type: 'trade' | 'withdraw'): Promise<number>;
-    static deposit(args: {
-        addressHex: string;
-        tokenCode: number;
-        amountHex: number;
-        txHash: string;
-    }): Promise<import("axios").AxiosResponse<any>>;
-    static withdraw(args: {
-        address: string;
-        tokenCode: number;
-        amount: string;
-        withdrawFeeE5: string;
-        withdrawAddress: string;
-        withdrawNonce: number;
-        signature: string;
-    }): Promise<import("axios").AxiosResponse<any>>;
-    static balance(address: string): Promise<TokenBalance[]>;
-    static orders(address: string): Promise<Order[]>;
-    static walletTrades(address: string): Promise<Trade[]>;
-}
+declare type ApiOptions = {
+    apiUrl?: string;
+    auth?: {
+        username: string;
+        password: string;
+    };
+};
+declare function setCustomApiOptions(apiOptions: ApiOptions): void;
+declare function markets(): Promise<Market[]>;
+declare function tokens(): Promise<Token[]>;
+declare function placeOrder(data: any): Promise<any>;
+declare function cancelOrder(data: {
+    signature: string;
+}, id: string): Promise<any>;
+declare function nonce(address: string, type: 'trade' | 'withdraw'): Promise<number>;
+declare function deposit(args: {
+    addressHex: string;
+    tokenCode: number;
+    amountHex: number;
+    txHash: string;
+}): Promise<any>;
+declare function withdraw(args: {
+    address: string;
+    tokenCode: number;
+    amount: string;
+    withdrawFeeE5: string;
+    withdrawAddress: string;
+    withdrawNonce: number;
+    signature: string;
+}): Promise<any>;
+declare function balance(address: string): Promise<TokenBalance[]>;
+declare function orders(address: string): Promise<Order[]>;
+declare function walletTrades(address: string): Promise<Trade[]>;
+declare const _default: {
+    setCustomApiOptions: typeof setCustomApiOptions;
+    markets: typeof markets;
+    tokens: typeof tokens;
+    placeOrder: typeof placeOrder;
+    cancelOrder: typeof cancelOrder;
+    nonce: typeof nonce;
+    deposit: typeof deposit;
+    withdraw: typeof withdraw;
+    balance: typeof balance;
+    orders: typeof orders;
+    walletTrades: typeof walletTrades;
+};
+export default _default;
+export { ApiOptions };

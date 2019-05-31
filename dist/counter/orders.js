@@ -48,21 +48,21 @@ function placeOrder(client, args) {
                 case 0:
                     CREATE_TITLE = 'counter.market order:';
                     address = client.getAddress();
-                    return [4 /*yield*/, requests_1.Requests.markets()];
+                    return [4 /*yield*/, requests_1["default"].markets()];
                 case 1:
                     markets = _a.sent();
                     market = markets.find(function (m) { return m.symbol === args.marketSymbol; });
                     if (!market) {
                         throw new Error("Market " + args.marketSymbol + " is not listed on counter");
                     }
-                    return [4 /*yield*/, requests_1.Requests.tokens()];
+                    return [4 /*yield*/, requests_1["default"].tokens()];
                 case 2:
                     tokens = _a.sent();
                     stockToken = tokens.find(function (t) { return t.code === market.stockTokenCode; });
                     if (!stockToken) {
                         throw new Error("Token with code " + market.stockTokenCode + " can not be found");
                     }
-                    return [4 /*yield*/, requests_1.Requests.nonce(address, 'trade')];
+                    return [4 /*yield*/, requests_1["default"].nonce(address, 'trade')];
                 case 3:
                     tradeNonce = _a.sent();
                     order = new order_1["default"]({
@@ -122,7 +122,7 @@ function placeOrder(client, args) {
                         signature: signature,
                         expiryTime: order.expiryTime
                     };
-                    return [4 /*yield*/, requests_1.Requests.placeOrder(requestData)];
+                    return [4 /*yield*/, requests_1["default"].placeOrder(requestData)];
                 case 5:
                     _a.sent();
                     return [2 /*return*/, order];
@@ -156,7 +156,7 @@ function cancelOrder(client, id) {
                         })];
                 case 1:
                     signature = _a.sent();
-                    return [4 /*yield*/, requests_1.Requests.cancelOrder({ signature: signature }, id)];
+                    return [4 /*yield*/, requests_1["default"].cancelOrder({ signature: signature }, id)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];
@@ -172,7 +172,7 @@ function fetchOrders(client) {
             switch (_a.label) {
                 case 0:
                     address = client.getAddress();
-                    return [4 /*yield*/, requests_1.Requests.orders(address)];
+                    return [4 /*yield*/, requests_1["default"].orders(address)];
                 case 1:
                     orders = _a.sent();
                     return [2 /*return*/, orders];

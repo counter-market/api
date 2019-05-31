@@ -1,5 +1,5 @@
 import Client, { EIP712Data } from './client';
-declare class PrivateKeyClient implements Client {
+declare class PrivateKeyClient extends Client {
     private privateKey;
     private privateKeyBuffer;
     constructor(privateKey: string);

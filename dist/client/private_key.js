@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -37,6 +50,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var eip712_1 = require("@dicether/eip712");
 var EthereumJSUtil = require("ethereumjs-util");
+var client_1 = require("./client");
 function composeEIP712Data(data) {
     var result = {
         types: {
@@ -59,12 +73,15 @@ function composeEIP712Data(data) {
     };
     return result;
 }
-var PrivateKeyClient = /** @class */ (function () {
+var PrivateKeyClient = /** @class */ (function (_super) {
+    __extends(PrivateKeyClient, _super);
     function PrivateKeyClient(privateKey) {
-        this.privateKey = "";
-        this.privateKeyBuffer = new Buffer("");
-        this.privateKey = privateKey;
-        this.privateKeyBuffer = Buffer.from(privateKey, 'hex');
+        var _this = _super.call(this) || this;
+        _this.privateKey = "";
+        _this.privateKeyBuffer = new Buffer("");
+        _this.privateKey = privateKey;
+        _this.privateKeyBuffer = Buffer.from(privateKey, 'hex');
+        return _this;
     }
     PrivateKeyClient.prototype.getAddress = function () {
         var buffPrivateKey = Buffer.from(this.privateKey, 'hex');
@@ -86,5 +103,5 @@ var PrivateKeyClient = /** @class */ (function () {
         });
     };
     return PrivateKeyClient;
-}());
+}(client_1["default"]));
 exports["default"] = PrivateKeyClient;

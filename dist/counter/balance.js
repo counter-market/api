@@ -46,14 +46,14 @@ function withdraw(client, args) {
                 case 0:
                     WITHDRAW_TITLE = 'counter.market withdraw:';
                     address = client.getAddress();
-                    return [4 /*yield*/, requests_1.Requests.tokens()];
+                    return [4 /*yield*/, requests_1["default"].tokens()];
                 case 1:
                     tokens = _a.sent();
                     token = tokens.find(function (t) { return t.symbol === args.tokenSymbol; });
                     if (!token) {
                         throw new Error("No token can be found with symbol " + args.tokenSymbol);
                     }
-                    return [4 /*yield*/, requests_1.Requests.nonce(address, 'withdraw')];
+                    return [4 /*yield*/, requests_1["default"].nonce(address, 'withdraw')];
                 case 2:
                     withdrawNonce = _a.sent();
                     withdrawFee = "0x" + new bignumber_js_1.BigNumber(0).toString(16);
@@ -84,7 +84,7 @@ function withdraw(client, args) {
                         })];
                 case 3:
                     signature = _a.sent();
-                    return [4 /*yield*/, requests_1.Requests.withdraw({
+                    return [4 /*yield*/, requests_1["default"].withdraw({
                             address: address,
                             tokenCode: token.code,
                             amount: amountWeiHex,
@@ -108,7 +108,7 @@ function getBalance(client) {
             switch (_a.label) {
                 case 0:
                     address = client.getAddress();
-                    return [4 /*yield*/, requests_1.Requests.balance(address)];
+                    return [4 /*yield*/, requests_1["default"].balance(address)];
                 case 1:
                     tokenBalances = _a.sent();
                     return [2 /*return*/, tokenBalances];

@@ -2,7 +2,7 @@ import { BigNumber } from 'bignumber.js'
 
 import Config from './../config'
 import Client from '../client/client'
-import { Requests } from '../requests'
+import Requests from '../requests'
 
 import TokenBalance from './../models/token_balance'
 

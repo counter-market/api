@@ -37,142 +37,169 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var axios_1 = require("axios");
 var API_URL = 'https://counter.market/api';
-var Requests = /** @class */ (function () {
-    function Requests() {
-    }
-    Requests.walletNonces = function (address, query) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = API_URL + "/wallets/" + address + "/nonces";
-                        return [4 /*yield*/, axios_1["default"].get(url, query)];
-                    case 1: return [2 /*return*/, (_a.sent()).data];
-                }
-            });
+function makeRequest(method, url, data) {
+    return __awaiter(this, void 0, void 0, function () {
+        var baseUrl, fullUrl, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    baseUrl = customApiOptions.apiUrl || API_URL;
+                    fullUrl = "" + baseUrl + url;
+                    return [4 /*yield*/, axios_1["default"].request({
+                            method: method,
+                            url: fullUrl,
+                            data: data,
+                            auth: customApiOptions.auth
+                        })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.data];
+            }
         });
-    };
-    Requests.markets = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = API_URL + "/markets";
-                        return [4 /*yield*/, axios_1["default"].get(url)];
-                    case 1: return [2 /*return*/, (_a.sent()).data.items];
-                }
-            });
+    });
+}
+var customApiOptions = {};
+function setCustomApiOptions(apiOptions) {
+    customApiOptions = apiOptions;
+}
+function markets() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', '/markets', {})];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items];
+            }
         });
-    };
-    Requests.tokens = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = API_URL + "/tokens?format=hex";
-                        return [4 /*yield*/, axios_1["default"].get(url)];
-                    case 1: return [2 /*return*/, (_a.sent()).data.items];
-                }
-            });
+    });
+}
+function tokens() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', '/tokens?format=hex', {})];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items];
+            }
         });
-    };
-    Requests.placeOrder = function (data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                url = API_URL + "/orders?format=float";
-                return [2 /*return*/, axios_1["default"].put(url, data)];
-            });
+    });
+}
+function placeOrder(data) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('put', '/orders?format=float', data)];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response];
+            }
         });
-    };
-    Requests.cancelOrder = function (data, id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                url = API_URL + "/orders/" + id;
-                return [2 /*return*/, axios_1["default"]["delete"](url, { data: data })];
-            });
+    });
+}
+function cancelOrder(data, id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('delete', "/orders/" + id, data)];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response];
+            }
         });
-    };
-    // tslint:disable-next-line: max-line-length
-    Requests.nonce = function (address, type) {
-        return __awaiter(this, void 0, void 0, function () {
-            var nonces, tradeNonce;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.walletNonces(address)];
-                    case 1:
-                        nonces = _a.sent();
-                        tradeNonce = nonces[type];
-                        return [2 /*return*/, tradeNonce];
-                }
-            });
+    });
+}
+// tslint:disable-next-line: max-line-length
+function nonce(address, type) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, tradeNonce;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/nonces", {})];
+                case 1:
+                    response = _a.sent();
+                    tradeNonce = response[type];
+                    return [2 /*return*/, tradeNonce];
+            }
         });
-    };
-    Requests.deposit = function (args) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                url = API_URL + "/wallets/" + args.addressHex + "/withdrawals";
-                return [2 /*return*/, axios_1["default"].put(url, {
+    });
+}
+function deposit(args) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('put', "/wallets/" + args.addressHex + "/withdrawals", {
                         tokenCode: args.tokenCode,
                         amount: "0x" + args.amountHex,
                         txHash: args.txHash
                     })];
-            });
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response];
+            }
         });
-    };
-    Requests.withdraw = function (args) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                url = API_URL + "/wallets/" + args.address + "/withdrawals";
-                return [2 /*return*/, axios_1["default"].put(url, args)];
-            });
+    });
+}
+function withdraw(args) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('put', "/wallets/" + args.address + "/withdrawals", args)];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response];
+            }
         });
-    };
-    Requests.balance = function (address) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = API_URL + "/wallets/" + address + "/token-accounts?format=float";
-                        return [4 /*yield*/, axios_1["default"].get(url)];
-                    case 1: return [2 /*return*/, (_a.sent()).data.items];
-                }
-            });
+    });
+}
+function balance(address) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/token-accounts?format=float", {})];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items];
+            }
         });
-    };
-    Requests.orders = function (address) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = API_URL + "/wallets/" + address + "/orders?format=float";
-                        return [4 /*yield*/, axios_1["default"].get(url)];
-                    case 1: return [2 /*return*/, (_a.sent()).data.items];
-                }
-            });
+    });
+}
+function orders(address) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/orders?format=float", {})];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items];
+            }
         });
-    };
-    Requests.walletTrades = function (address) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = API_URL + "/wallets/" + address + "/trades?format=float";
-                        return [4 /*yield*/, axios_1["default"].get(url)];
-                    case 1: return [2 /*return*/, (_a.sent()).data.items];
-                }
-            });
+    });
+}
+function walletTrades(address) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/trades?format=float", {})];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items];
+            }
         });
-    };
-    return Requests;
-}());
-exports.Requests = Requests;
+    });
+}
+exports["default"] = {
+    setCustomApiOptions: setCustomApiOptions,
+    markets: markets, tokens: tokens, placeOrder: placeOrder, cancelOrder: cancelOrder, nonce: nonce,
+    deposit: deposit, withdraw: withdraw, balance: balance, orders: orders, walletTrades: walletTrades
+};

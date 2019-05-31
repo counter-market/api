@@ -26,11 +26,13 @@ function composeEIP712Data(data: EIP712Data) {
   return result;
 }
 
-class PrivateKeyClient implements Client {
+class PrivateKeyClient extends Client {
   private privateKey: string = ""
   private privateKeyBuffer: Buffer = new Buffer("")
 
   constructor(privateKey: string) {
+    super()
+    
     this.privateKey = privateKey
     this.privateKeyBuffer = Buffer.from(privateKey, 'hex')
   }

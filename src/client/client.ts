@@ -1,3 +1,5 @@
+import Requests, { ApiOptions } from '../requests'
+
 type Type = {
   name: string;
   type: string;
@@ -20,9 +22,17 @@ type EIP712Data = {
   }
 }
 
-type Client = {
-  getAddress: () => string
-  signEIP712: (data: EIP712Data) => Promise<string>
+class Client {
+  public getAddress(): string {
+    throw new Error('Implementation required')
+  }
+  public async signEIP712(data: EIP712Data): Promise<string> {
+    throw new Error('Implementation required')
+  }
+
+  public setCustomApiOptions(apiOptions: ApiOptions) {
+    Requests.setCustomApiOptions(apiOptions)
+  }
 }
 
 export default Client

@@ -9,7 +9,7 @@ import * as Orders from '../orders'
 
 const placeOrderMock = jest.fn()
 jest.mock('../../requests', () => ({
-  Requests: {
+  default: {
     markets: async () => ([
       <Market>{ symbol: 'OMG/ETH', stockTokenCode: 1, cashTokenCode: 0 }
     ]),
@@ -23,10 +23,9 @@ jest.mock('../../requests', () => ({
 }))
 
 const signEIP712Mock = jest.fn((...args: any[]) => '0xabcdef')
-const client: Client = {
-  getAddress: () => '0x12345',
-  signEIP712: async (...args: any[]) => signEIP712Mock(...args)
-}
+const client: Client = new Client()
+client.getAddress = () => '0x12345'
+client.signEIP712 = async (...args: any[]) => signEIP712Mock(...args)
 
 beforeEach(() => {
   placeOrderMock.mockClear()

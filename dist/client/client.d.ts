@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { ApiOptions } from '../requests';
 declare type Type = {
     name: string;
     type: string;
@@ -18,9 +19,10 @@ declare type EIP712Data = {
         [id: string]: Data;
     };
 };
-declare type Client = {
-    getAddress: () => string;
-    signEIP712: (data: EIP712Data) => Promise<string>;
-};
+declare class Client {
+    getAddress(): string;
+    signEIP712(data: EIP712Data): Promise<string>;
+    setCustomApiOptions(apiOptions: ApiOptions): void;
+}
 export default Client;
 export { EIP712Data };

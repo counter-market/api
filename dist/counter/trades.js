@@ -43,7 +43,7 @@ function fetchBalance(client) {
             switch (_a.label) {
                 case 0:
                     address = client.getAddress();
-                    return [4 /*yield*/, requests_1.Requests.balance(address)];
+                    return [4 /*yield*/, requests_1["default"].balance(address)];
                 case 1:
                     tokenBalances = _a.sent();
                     return [2 /*return*/, tokenBalances];
@@ -57,7 +57,7 @@ function fetchMyTrades(client) {
         var address, trades;
         return __generator(this, function (_a) {
             address = client.getAddress();
-            trades = requests_1.Requests.walletTrades(address);
+            trades = requests_1["default"].walletTrades(address);
             return [2 /*return*/, trades];
         });
     });

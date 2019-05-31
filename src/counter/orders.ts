@@ -3,7 +3,7 @@ import { BigNumber } from 'bignumber.js'
 
 import Config from './../config'
 import Client from '../client/client'
-import { Requests } from '../requests'
+import Requests from '../requests'
 
 import Order from './../models/order'
 
