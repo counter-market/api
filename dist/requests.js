@@ -114,7 +114,6 @@ function cancelOrder(data, id) {
         });
     });
 }
-// tslint:disable-next-line: max-line-length
 function nonce(address, type) {
     return __awaiter(this, void 0, void 0, function () {
         var response, tradeNonce;

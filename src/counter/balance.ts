@@ -1,29 +1,25 @@
-import { BigNumber } from 'bignumber.js'
+import { BigNumber } from 'bignumber.js';
 
-import Config from './../config'
-import Client from '../client/client'
-import Requests from '../requests'
+import Config from './../config';
+import Client from '../client/client';
+import Requests from '../requests';
 
-import TokenBalance from './../models/token_balance'
+import TokenBalance from './../models/token_balance';
 
-export async function withdraw(client: Client, args: {
-  tokenSymbol: string,
-  amount: number
-}) {
+export async function withdraw(client: Client, tokenSymbol: string, amount: number) {
   const WITHDRAW_TITLE = 'counter.market withdraw:';
-  const address = client.getAddress()
+  const address = client.getAddress();
 
-  const tokens = await Requests.tokens()
-  const token = tokens.find(t => t.symbol === args.tokenSymbol);
+  const tokens = await Requests.tokens();
+  const token = tokens.find((t) => t.symbol === tokenSymbol);
   if (!token) {
-    throw new Error(`No token can be found with symbol ${args.tokenSymbol}`);
+    throw new Error(`No token can be found with symbol ${tokenSymbol}`);
   }
 
   const withdrawNonce = await Requests.nonce(address, 'withdraw');
 
-  // FIXME: need to get withdrawFee from tokens
-  const withdrawFee = `0x${new BigNumber(0).toString(16)}`;
-  const amountWeiHex = `0x${new BigNumber(args.amount).shiftedBy(token.decimalPlaces).toString(16)}`;
+  const withdrawFee = `0x${new BigNumber(token.withdrawalFeeAmount).toString(16)}`;
+  const amountWeiHex = `0x${new BigNumber(amount).shiftedBy(token.decimalPlaces).toString(16)}`;
 
   const signature = await client.signEIP712({
     types: {
@@ -45,10 +41,10 @@ export async function withdraw(client: Client, args: {
       tokenCode: token.code,
       withdrawAddress: address,
       amount: amountWeiHex,
-      withdrawFee: withdrawFee,
+      withdrawFee,
       withdrawNonce,
-    }
-  })
+    },
+  });
 
   await Requests.withdraw({
     address,
@@ -62,7 +58,7 @@ export async function withdraw(client: Client, args: {
 }
 
 export async function getBalance(client: Client): Promise<TokenBalance[]> {
-  const address = client.getAddress()
-  const tokenBalances = await Requests.balance(address)
-  return tokenBalances
+  const address = client.getAddress();
+  const tokenBalances = await Requests.balance(address);
+  return tokenBalances;
 }

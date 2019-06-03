@@ -1,6 +1,6 @@
-import Requests, { ApiOptions } from '../requests'
+import Requests, { ApiOptions } from '../requests';
 
-type Type = {
+interface Type {
   name: string;
   type: string;
 }
@@ -9,31 +9,31 @@ type Data = {
   [id: string]: Data;
 } | string | Buffer | number | number[] | undefined;
 
-type EIP712Data = {
-  types: { 
-    [id: string]: Type[]
-  },
+interface EIP712Data {
+  types: {
+    [id: string]: Type[],
+  };
   domain: {
     chainId: number,
-    verifyingContract: string
-  },
+    verifyingContract: string,
+  };
   message: {
-    [id: string]: Data
-  }
+    [id: string]: Data,
+  };
 }
 
 class Client {
   public getAddress(): string {
-    throw new Error('Implementation required')
+    throw new Error('Implementation required');
   }
   public async signEIP712(data: EIP712Data): Promise<string> {
-    throw new Error('Implementation required')
+    throw new Error('Implementation required');
   }
 
   public setCustomApiOptions(apiOptions: ApiOptions) {
-    Requests.setCustomApiOptions(apiOptions)
+    Requests.setCustomApiOptions(apiOptions);
   }
 }
 
-export default Client
-export { EIP712Data }
+export default Client;
+export { EIP712Data };

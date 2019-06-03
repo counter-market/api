@@ -1,8 +1,8 @@
-type TokenBalance = {
-  id: string,
-  tokenCode: 0,
-  totalAmount: string,
-  onOrders: string,
+interface TokenBalance {
+  id: string;
+  tokenCode: 0;
+  totalAmount: string;
+  onOrders: string;
 }
 
-export default TokenBalance
+export default TokenBalance;

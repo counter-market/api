@@ -1,4 +1,4 @@
-declare type Props = {
+interface Props {
     id: number;
     type: 'buy' | 'sell';
     stockTokenCode: number;
@@ -11,7 +11,7 @@ declare type Props = {
     expiryTime: string | number;
     maker: string;
     uniqueId: string;
-};
+}
 declare class Order implements Props {
     id: number;
     type: 'buy' | 'sell';

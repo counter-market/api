@@ -40,7 +40,7 @@ var bignumber_js_1 = require("bignumber.js");
 var config_1 = require("./../config");
 var requests_1 = require("../requests");
 var order_1 = require("./../models/order");
-function placeOrder(client, args) {
+function placeOrder(client, type, stockAmount, cashPrice, marketSymbol) {
     return __awaiter(this, void 0, void 0, function () {
         var CREATE_TITLE, address, markets, market, tokens, stockToken, tradeNonce, order, signature, requestData;
         return __generator(this, function (_a) {
@@ -51,9 +51,9 @@ function placeOrder(client, args) {
                     return [4 /*yield*/, requests_1["default"].markets()];
                 case 1:
                     markets = _a.sent();
-                    market = markets.find(function (m) { return m.symbol === args.marketSymbol; });
+                    market = markets.find(function (m) { return m.symbol === marketSymbol; });
                     if (!market) {
-                        throw new Error("Market " + args.marketSymbol + " is not listed on counter");
+                        throw new Error("Market " + marketSymbol + " is not listed on counter");
                     }
                     return [4 /*yield*/, requests_1["default"].tokens()];
                 case 2:
@@ -66,9 +66,9 @@ function placeOrder(client, args) {
                 case 3:
                     tradeNonce = _a.sent();
                     order = new order_1["default"]({
-                        type: args.type,
-                        cashPrice: "" + args.cashPrice,
-                        stockAmount: "" + args.stockAmount,
+                        type: type,
+                        cashPrice: "" + cashPrice,
+                        stockAmount: "" + stockAmount,
                         stockTokenCode: market.stockTokenCode,
                         cashTokenCode: market.cashTokenCode,
                         expiryTime: Moment().add(config_1["default"].ORDER_TTL_IN_DAYS, 'days').toISOString(),
@@ -110,7 +110,7 @@ function placeOrder(client, args) {
                 case 4:
                     signature = _a.sent();
                     requestData = {
-                        type: args.type,
+                        type: type,
                         tradeNonce: tradeNonce,
                         stockTokenCode: order.stockTokenCode,
                         cashTokenCode: order.cashTokenCode,

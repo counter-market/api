@@ -1,45 +1,44 @@
-import * as Moment from 'moment'
-import { BigNumber } from 'bignumber.js'
+import * as Moment from 'moment';
+import { BigNumber } from 'bignumber.js';
 
-import Config from './../config'
-import Client from '../client/client'
-import Requests from '../requests'
+import Config from './../config';
+import Client from '../client/client';
+import Requests from '../requests';
 
-import Order from './../models/order'
+import Order from './../models/order';
 
-export async function placeOrder(client: Client, args: {
-  type: 'buy' | 'sell',
-  stockAmount: number,
-  cashPrice: number,
-  marketSymbol: string
-}): Promise<Order> {
+export async function placeOrder(client: Client,
+                                 type: 'buy' | 'sell',
+                                 stockAmount: number,
+                                 cashPrice: number,
+                                 marketSymbol: string): Promise<Order> {
   const CREATE_TITLE = 'counter.market order:';
-  const address = client.getAddress()
-  
-  const markets = await Requests.markets()
-  const market = markets.find(m => m.symbol === args.marketSymbol);
+  const address = client.getAddress();
+
+  const markets = await Requests.markets();
+  const market = markets.find((m) => m.symbol === marketSymbol);
   if (!market) {
-    throw new Error(`Market ${args.marketSymbol} is not listed on counter`);
+    throw new Error(`Market ${marketSymbol} is not listed on counter`);
   }
 
-  const tokens = await Requests.tokens()
-  const stockToken = tokens.find(t => t.code === market.stockTokenCode);
+  const tokens = await Requests.tokens();
+  const stockToken = tokens.find((t) => t.code === market.stockTokenCode);
   if (!stockToken) {
     throw new Error(`Token with code ${market.stockTokenCode} can not be found`);
   }
 
   const tradeNonce = await Requests.nonce(address, 'trade');
-  
+
   const order: Order = new Order({
-    type: args.type,
-    cashPrice: `${args.cashPrice}`,
-    stockAmount: `${args.stockAmount}`,
+    type: type,
+    cashPrice: `${cashPrice}`,
+    stockAmount: `${stockAmount}`,
     stockTokenCode: market.stockTokenCode,
     cashTokenCode: market.cashTokenCode,
     expiryTime: Moment().add(Config.ORDER_TTL_IN_DAYS, 'days').toISOString(),
-    maker: address
+    maker: address,
   });
-  order.setUniqueId(tradeNonce)
+  order.setUniqueId(tradeNonce);
 
   const signature = await client.signEIP712({
     types: {
@@ -62,7 +61,7 @@ export async function placeOrder(client: Client, args: {
     },
     message: {
       title: CREATE_TITLE,
-      tradeNonce: tradeNonce,
+      tradeNonce,
       action: order.type === 'buy' ? 0 : 1,
       priceE8: `0x${new BigNumber(order.cashPrice).shiftedBy(8).toString(16)}`,
       amount: `0x${new BigNumber(order.stockAmount).shiftedBy(stockToken.decimalPlaces).toString(16)}`,
@@ -70,12 +69,12 @@ export async function placeOrder(client: Client, args: {
       takerFeeE5: Config.TAKER_FEE_E5,
       stockTokenCode: order.stockTokenCode,
       cashTokenCode: order.cashTokenCode,
-      expiryTime: Moment(order.expiryTime).unix()
-    }
-  })
+      expiryTime: Moment(order.expiryTime).unix(),
+    },
+  });
 
   const requestData = {
-    type: args.type,
+    type: type,
     tradeNonce,
     stockTokenCode: order.stockTokenCode,
     cashTokenCode: order.cashTokenCode,
@@ -85,12 +84,12 @@ export async function placeOrder(client: Client, args: {
     takerFeeE5: Config.TAKER_FEE_E5,
     maker: address,
     signature,
-    expiryTime: order.expiryTime
+    expiryTime: order.expiryTime,
   };
 
   await Requests.placeOrder(requestData);
 
-  return order
+  return order;
 }
 
 export async function cancelOrder(client: Client, id: string) {
@@ -110,14 +109,14 @@ export async function cancelOrder(client: Client, id: string) {
     message: {
       title: CANCEL_TITLE,
       uniqueId: id,
-    }
-  })
+    },
+  });
 
   await Requests.cancelOrder({ signature }, id);
 }
 
 export async function fetchOrders(client: Client): Promise<Order[]> {
-  const address = client.getAddress()
-  const orders = await Requests.orders(address)
-  return orders
+  const address = client.getAddress();
+  const orders = await Requests.orders(address);
+  return orders;
 }

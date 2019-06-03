@@ -1,7 +1,7 @@
-type Market = {
-  stockTokenCode: number,
-  cashTokenCode: number,
-  symbol: string,
+interface Market {
+  stockTokenCode: number;
+  cashTokenCode: number;
+  symbol: string;
 }
 
-export default Market
+export default Market;

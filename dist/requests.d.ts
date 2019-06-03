@@ -3,13 +3,13 @@ import Token from './models/token';
 import Trade from './models/trade';
 import TokenBalance from './models/token_balance';
 import Order from './models/order';
-declare type ApiOptions = {
+interface ApiOptions {
     apiUrl?: string;
     auth?: {
         username: string;
         password: string;
     };
-};
+}
 declare function setCustomApiOptions(apiOptions: ApiOptions): void;
 declare function markets(): Promise<Market[]>;
 declare function tokens(): Promise<Token[]>;

@@ -13,7 +13,7 @@
     "pretty": true,
     "strict": true,
     "resolveJsonModule": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "baseUrl": ".",
     "rootDir": ".",
     "noImplicitThis": true,
@@ -25,5 +25,8 @@
   "include": [
     "./src/**/*",
     "./typings/*"
+  ],
+  "exclude": [
+    "./src/counter/__specs__"
   ]
 }

@@ -1,13 +1,22 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended",
+        "tslint:recommended"
     ],
     "jsRules": {},
     "rules": {
-        "semicolon": [true, "never"],
         "ordered-imports": false,
         "max-classes-per-file": false,
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "interface-name": false,
+        "object-literal-sort-keys": false,
+        "no-alias-methods": true
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "linterOptions": {
+        "exclude": ["./counter/__specs__"]
+    }
 }

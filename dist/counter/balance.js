@@ -38,7 +38,7 @@ exports.__esModule = true;
 var bignumber_js_1 = require("bignumber.js");
 var config_1 = require("./../config");
 var requests_1 = require("../requests");
-function withdraw(client, args) {
+function withdraw(client, tokenSymbol, amount) {
     return __awaiter(this, void 0, void 0, function () {
         var WITHDRAW_TITLE, address, tokens, token, withdrawNonce, withdrawFee, amountWeiHex, signature;
         return __generator(this, function (_a) {
@@ -49,15 +49,15 @@ function withdraw(client, args) {
                     return [4 /*yield*/, requests_1["default"].tokens()];
                 case 1:
                     tokens = _a.sent();
-                    token = tokens.find(function (t) { return t.symbol === args.tokenSymbol; });
+                    token = tokens.find(function (t) { return t.symbol === tokenSymbol; });
                     if (!token) {
-                        throw new Error("No token can be found with symbol " + args.tokenSymbol);
+                        throw new Error("No token can be found with symbol " + tokenSymbol);
                     }
                     return [4 /*yield*/, requests_1["default"].nonce(address, 'withdraw')];
                 case 2:
                     withdrawNonce = _a.sent();
-                    withdrawFee = "0x" + new bignumber_js_1.BigNumber(0).toString(16);
-                    amountWeiHex = "0x" + new bignumber_js_1.BigNumber(args.amount).shiftedBy(token.decimalPlaces).toString(16);
+                    withdrawFee = "0x" + new bignumber_js_1.BigNumber(token.withdrawalFeeAmount).toString(16);
+                    amountWeiHex = "0x" + new bignumber_js_1.BigNumber(amount).shiftedBy(token.decimalPlaces).toString(16);
                     return [4 /*yield*/, client.signEIP712({
                             types: {
                                 Message: [

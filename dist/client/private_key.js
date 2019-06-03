@@ -77,8 +77,8 @@ var PrivateKeyClient = /** @class */ (function (_super) {
     __extends(PrivateKeyClient, _super);
     function PrivateKeyClient(privateKey) {
         var _this = _super.call(this) || this;
-        _this.privateKey = "";
-        _this.privateKeyBuffer = new Buffer("");
+        _this.privateKey = '';
+        _this.privateKeyBuffer = new Buffer('');
         _this.privateKey = privateKey;
         _this.privateKeyBuffer = Buffer.from(privateKey, 'hex');
         return _this;

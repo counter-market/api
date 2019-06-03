@@ -1,4 +1,4 @@
-declare type Trade = {
+interface Trade {
     id: number;
     type: 'buy' | 'sell';
     stockTokenCode: number;
@@ -11,5 +11,5 @@ declare type Trade = {
     taker: string;
     isBuyerMaker: true;
     timestamp: string;
-};
+}
 export default Trade;

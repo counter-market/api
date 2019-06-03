@@ -1,7 +1,7 @@
-import { TypedData, signTypedData } from '@dicether/eip712'
-import * as EthereumJSUtil from 'ethereumjs-util'
+import { TypedData, signTypedData } from '@dicether/eip712';
+import * as EthereumJSUtil from 'ethereumjs-util';
 
-import Client, { EIP712Data } from './client'
+import Client, { EIP712Data } from './client';
 
 function composeEIP712Data(data: EIP712Data) {
   const result: TypedData = {
@@ -27,26 +27,26 @@ function composeEIP712Data(data: EIP712Data) {
 }
 
 class PrivateKeyClient extends Client {
-  private privateKey: string = ""
-  private privateKeyBuffer: Buffer = new Buffer("")
+  private privateKey: string = '';
+  private privateKeyBuffer: Buffer = new Buffer('');
 
   constructor(privateKey: string) {
-    super()
-    
-    this.privateKey = privateKey
-    this.privateKeyBuffer = Buffer.from(privateKey, 'hex')
+    super();
+
+    this.privateKey = privateKey;
+    this.privateKeyBuffer = Buffer.from(privateKey, 'hex');
   }
 
   public getAddress() {
-    const buffPrivateKey = Buffer.from(this.privateKey, 'hex')
-    return `0x${EthereumJSUtil.privateToAddress(buffPrivateKey).toString('hex')}`
+    const buffPrivateKey = Buffer.from(this.privateKey, 'hex');
+    return `0x${EthereumJSUtil.privateToAddress(buffPrivateKey).toString('hex')}`;
   }
 
   public async signEIP712(data: EIP712Data) {
-    const EIP712data = composeEIP712Data(data)
-    const signature = await signTypedData(EIP712data, this.privateKeyBuffer)
-    return signature
+    const EIP712data = composeEIP712Data(data);
+    const signature = await signTypedData(EIP712data, this.privateKeyBuffer);
+    return signature;
   }
 }
 
-export default PrivateKeyClient
+export default PrivateKeyClient;
