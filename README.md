@@ -1,7 +1,10 @@
 # NPM API package
-The official api library for trading on Counter market
+The official api library for trading on Counter market.
+
 For more information, please visit [Counter api docs](https://counter.market/developers/#general)
-####Example of using
+
+#### Example of using
+
 ```js
 import CounterApi from 'counter-api';
 
@@ -13,9 +16,9 @@ import CounterApi from 'counter-api';
 })();
 ```
 
-##Available clients
+## Available clients
 
-###PrivateKeyClient
+### PrivateKeyClient
 
 ```js
 const privateKey = '62537136911bca3a7e2b....';
@@ -26,9 +29,9 @@ Attribute | Type | Description
 --------- | ---- | -----------
 privateKey| string | your private key
 
-##Available methods
+## Available methods
 
-###createOrder(client, type, stockAmount, cashPrice, symbol)
+### createOrder(client, type, stockAmount, cashPrice, symbol)
 
 ```js
 CounterApi.createOrder(privateKeyClient, 'buy', 123, 123, 'OMG/ETH');
@@ -47,7 +50,7 @@ Output:
 Promise<Order>
 ```
 
-###cancelOrder(client, id)
+### cancelOrder(client, id)
 
 ```js
 CounterApi.cancelOrder(privateKeyClient, '0x00000000000000000000000100001a5078d5831ff28bd6895cdfe450118d37f9');
@@ -58,7 +61,7 @@ Attribute | Type | Description
 client    | Client | client for sign
 id        | string | unique order id
 
-###fetchOrders(client)
+### fetchOrders(client)
 
 ```js
 CounterApi.fetchOrders(privateKeyClient);
@@ -72,7 +75,8 @@ Output:
 ```js
 Promise<Order[]>
 ```
-###fetchMyTrades(client)
+
+### fetchMyTrades(client)
 
 ```js
 CounterApi.fetchMyTrades(privateKeyClient);
@@ -87,7 +91,7 @@ Output:
 Promise<Trade>
 ```
 
-###getBalance(client)
+### getBalance(client)
 
 ```js
 CounterApi.getBalance(privateKeyClient);
@@ -102,7 +106,7 @@ Output:
 Promise<Balance>
 ```
 
-###withdraw(client)
+### withdraw(client)
 
 ```js
 CounterApi.withdraw(privateKeyClient, 'ETH');
