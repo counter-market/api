@@ -1,4 +1,4 @@
-# NPM API package
+# Counter market API 
 The official api library for trading on Counter market.
 
 For more information, please visit [Counter api docs](https://counter.market/developers/#general)
@@ -6,7 +6,7 @@ For more information, please visit [Counter api docs](https://counter.market/dev
 #### Example of using
 
 ```js
-import CounterApi from 'counter-api';
+import CounterApi from 'counter-market';
 
 (async () => {
     const privateKey = '62537136911bca3a7e2b....';
@@ -17,6 +17,7 @@ import CounterApi from 'counter-api';
 ```
 
 ## Available clients
+
 
 ### PrivateKeyClient
 
