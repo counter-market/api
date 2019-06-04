@@ -1,4 +1,4 @@
-import { placeOrder, cancelOrder, fetchOrders } from './counter/orders';
+import { createOrder, cancelOrder, fetchOrders } from './counter/orders';
 import { fetchMyTrades } from './counter/trades';
 import { getBalance, withdraw } from './counter/balance';
 
@@ -6,7 +6,7 @@ import PrivateKeyClient from './client/private_key';
 
 export default {
   // orders
-  placeOrder,
+  createOrder,
   cancelOrder,
   fetchOrders,
 

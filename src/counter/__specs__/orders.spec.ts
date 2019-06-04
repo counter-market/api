@@ -7,7 +7,7 @@ import Client from '../../client/client';
 
 import * as Orders from '../orders';
 
-const placeOrderMock = jest.fn();
+const createOrderMock = jest.fn();
 jest.mock('../../requests', () => ({
   default: {
     markets: async () => ([
@@ -17,7 +17,7 @@ jest.mock('../../requests', () => ({
        { code: 0, decimalPlaces: 18, withdrawalFeeAmount: '0' } as Token,
        { code: 1, decimalPlaces: 18, withdrawalFeeAmount: '0' } as Token,
     ]),
-    placeOrder: async (...args: any[]) => placeOrderMock(...args),
+    createOrder: async (...args: any[]) => createOrderMock(...args),
     nonce: async () => 101,
   },
 }));
@@ -28,16 +28,16 @@ client.getAddress = () => '0x12345';
 client.signEIP712 = async (...args: any[]) => signEIP712Mock(...args);
 
 beforeEach(() => {
-  placeOrderMock.mockClear();
+  createOrderMock.mockClear();
   signEIP712Mock.mockClear();
 });
 
 describe('Orders', () => {
 
-  describe('placeOrder', () => {
+  describe('createOrder', () => {
 
     it('places order', async (done) => {
-      await Orders.placeOrder(client, 'buy', 100, 0.1, 'OMG/ETH');
+      await Orders.createOrder(client, 'buy', 100, 0.1, 'OMG/ETH');
 
       expect(signEIP712Mock).toHaveBeenCalledTimes(1);
 
@@ -51,9 +51,9 @@ describe('Orders', () => {
       expect(args.message.stockTokenCode).toEqual(1);
       expect(args.message.cashTokenCode).toEqual(0);
 
-      expect(placeOrderMock).toHaveBeenCalledTimes(1);
+      expect(createOrderMock).toHaveBeenCalledTimes(1);
 
-      args = placeOrderMock.mock.calls[0][0];
+      args = createOrderMock.mock.calls[0][0];
 
       expect(args.type).toEqual('buy');
       expect(args.tradeNonce).toEqual(101);

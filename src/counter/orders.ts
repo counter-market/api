@@ -7,7 +7,7 @@ import Requests from '../requests';
 
 import Order from './../models/order';
 
-export async function placeOrder(client: Client,
+export async function createOrder(client: Client,
                                  type: 'buy' | 'sell',
                                  stockAmount: number,
                                  cashPrice: number,
@@ -30,7 +30,7 @@ export async function placeOrder(client: Client,
   const tradeNonce = await Requests.nonce(address, 'trade');
 
   const order: Order = new Order({
-    type: type,
+    type,
     cashPrice: `${cashPrice}`,
     stockAmount: `${stockAmount}`,
     stockTokenCode: market.stockTokenCode,
@@ -74,7 +74,7 @@ export async function placeOrder(client: Client,
   });
 
   const requestData = {
-    type: type,
+    type,
     tradeNonce,
     stockTokenCode: order.stockTokenCode,
     cashTokenCode: order.cashTokenCode,
@@ -87,7 +87,7 @@ export async function placeOrder(client: Client,
     expiryTime: order.expiryTime,
   };
 
-  await Requests.placeOrder(requestData);
+  await Requests.createOrder(requestData);
 
   return order;
 }

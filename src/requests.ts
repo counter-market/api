@@ -41,7 +41,7 @@ async function tokens(): Promise<Token[]> {
   return response.items;
 }
 
-async function placeOrder(data: any) {
+async function createOrder(data: any) {
   const response = await makeRequest('put', '/orders?format=float', data);
   return response;
 }
@@ -107,7 +107,7 @@ async function walletTrades(address: string): Promise<Trade[]> {
 
 export default {
   setCustomApiOptions,
-  markets, tokens, placeOrder, cancelOrder, nonce,
+  markets, tokens, createOrder, cancelOrder, nonce,
   deposit, withdraw, balance, orders, walletTrades,
 };
 export { ApiOptions };
