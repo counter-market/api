@@ -1,5 +1,5 @@
 {
-  "name": "counter",
+  "name": "counter-market",
   "version": "0.0.2",
   "description": "Package for working with counter market",
   "main": "dist/index.js",
