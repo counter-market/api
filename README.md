@@ -12,7 +12,23 @@ import CounterApi from 'counter-market';
     const privateKey = '62537136911bca3a7e2b....';
     const privateKeyClient = new CounterApi.PrivateKeyClient(privateKey);
 
-    const order = await CounterApi.createOrder(privateKeyClient, 'buy', 123, 123, 'OMG/ETH');
+    const order = await CounterApi.createOrder(privateKeyClient, 'buy', 100, 0.00797, 'OMG/ETH');
+})();
+```
+
+#### CCXT compatible version
+Counter market contain wrapper for compatibility with ccxt.
+For more information about methods see [CCXT](https://github.com/ccxt/ccxt/wiki/Manual) documentation
+
+```js
+import CounterApi from 'counter-market';
+
+(async () => {
+    const privateKey = '62537136911bca3a7e2b....';
+    const privateKeyClient = new CounterApi.PrivateKeyClient(privateKey);
+
+    const counter = new CounterApi.CCXTCompatible(privateKeyClient);
+	const order = await counter.createOrder('OMG/ETH','limit',"buy", 100, 0.00797)
 })();
 ```
 
