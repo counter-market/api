@@ -40,7 +40,7 @@ var bignumber_js_1 = require("bignumber.js");
 var config_1 = require("./../config");
 var requests_1 = require("../requests");
 var order_1 = require("./../models/order");
-function createOrder(client, type, stockAmount, cashPrice, marketSymbol) {
+function createOrder(client, type, stockAmount, cashPrice, symbol) {
     return __awaiter(this, void 0, void 0, function () {
         var CREATE_TITLE, address, markets, market, tokens, stockToken, tradeNonce, order, signature, requestData;
         return __generator(this, function (_a) {
@@ -51,9 +51,9 @@ function createOrder(client, type, stockAmount, cashPrice, marketSymbol) {
                     return [4 /*yield*/, requests_1.default.markets()];
                 case 1:
                     markets = _a.sent();
-                    market = markets.find(function (m) { return m.symbol === marketSymbol; });
+                    market = markets.find(function (m) { return m.symbol === symbol; });
                     if (!market) {
-                        throw new Error("Market " + marketSymbol + " is not listed on counter");
+                        throw new Error("Market " + symbol + " is not listed on counter");
                     }
                     return [4 /*yield*/, requests_1.default.tokens()];
                 case 2:
@@ -67,6 +67,7 @@ function createOrder(client, type, stockAmount, cashPrice, marketSymbol) {
                     tradeNonce = _a.sent();
                     order = new order_1.default({
                         type: type,
+                        symbol: symbol,
                         cashPrice: "" + cashPrice,
                         stockAmount: "" + stockAmount,
                         stockTokenCode: market.stockTokenCode,
@@ -120,7 +121,7 @@ function createOrder(client, type, stockAmount, cashPrice, marketSymbol) {
                         takerFeeE5: config_1.default.TAKER_FEE_E5,
                         maker: address,
                         signature: signature,
-                        expiryTime: order.expiryTime,
+                        expiryTime: Moment(order.expiryTime).unix(),
                     };
                     return [4 /*yield*/, requests_1.default.createOrder(requestData)];
                 case 5:

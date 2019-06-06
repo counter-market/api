@@ -36,8 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
+var market_1 = require("./models/market");
+var token_1 = require("./models/token");
+var trade_1 = require("./models/trade");
+var ticker_1 = require("./models/ticker");
+var order_1 = require("./models/order");
+var orderBook_1 = require("./models/orderBook");
 var API_URL = 'https://counter.market/api';
-function makeRequest(method, url, data) {
+function makeRequest(method, url, data, params) {
     return __awaiter(this, void 0, void 0, function () {
         var baseUrl, fullUrl, response;
         return __generator(this, function (_a) {
@@ -47,6 +53,7 @@ function makeRequest(method, url, data) {
                     fullUrl = "" + baseUrl + url;
                     return [4 /*yield*/, axios_1.default.request({
                             method: method,
+                            params: params,
                             url: fullUrl,
                             data: data,
                             auth: customApiOptions.auth,
@@ -70,7 +77,7 @@ function markets() {
                 case 0: return [4 /*yield*/, makeRequest('get', '/markets', {})];
                 case 1:
                     response = _a.sent();
-                    return [2 /*return*/, response.items];
+                    return [2 /*return*/, response.items.map(function (market) { return new market_1.Market(market); })];
             }
         });
     });
@@ -83,7 +90,7 @@ function tokens() {
                 case 0: return [4 /*yield*/, makeRequest('get', '/tokens?format=hex', {})];
                 case 1:
                     response = _a.sent();
-                    return [2 /*return*/, response.items];
+                    return [2 /*return*/, response.items.map(function (token) { return new token_1.Token(token); })];
             }
         });
     });
@@ -171,12 +178,64 @@ function balance(address) {
         });
     });
 }
-function orders(address) {
+function orders(address, params) {
     return __awaiter(this, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/orders?format=float", {})];
+                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/orders?format=float", {}, params)];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items.map(function (order) { return new order_1.Order(order); })];
+            }
+        });
+    });
+}
+function walletTrades(address, params) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/trades?format=float", {}, params)];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.items.map(function (trade) { return new trade_1.Trade(trade); })];
+            }
+        });
+    });
+}
+function ticker(symbol) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/markets/" + symbol + "/ticker?format=float", {})];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, new ticker_1.Ticker(response, symbol)];
+            }
+        });
+    });
+}
+function orderBook(symbol, params) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/markets/" + symbol + "/orderbook?format=float", {}, params)];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, new orderBook_1.default(response)];
+            }
+        });
+    });
+}
+function ohlcv(symbol, params) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, makeRequest('get', "/markets/" + symbol + "/ohlcv?format=float", {}, params)];
                 case 1:
                     response = _a.sent();
                     return [2 /*return*/, response.items];
@@ -184,15 +243,15 @@ function orders(address) {
         });
     });
 }
-function walletTrades(address) {
+function trades(symbol, params) {
     return __awaiter(this, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, makeRequest('get', "/wallets/" + address + "/trades?format=float", {})];
+                case 0: return [4 /*yield*/, makeRequest('get', "/markets/" + symbol + "/trades?format=float", {}, params)];
                 case 1:
                     response = _a.sent();
-                    return [2 /*return*/, response.items];
+                    return [2 /*return*/, response.items.map(function (trade) { return new trade_1.Trade(trade); })];
             }
         });
     });
@@ -201,5 +260,6 @@ exports.default = {
     setCustomApiOptions: setCustomApiOptions,
     markets: markets, tokens: tokens, createOrder: createOrder, cancelOrder: cancelOrder, nonce: nonce,
     deposit: deposit, withdraw: withdraw, balance: balance, orders: orders, walletTrades: walletTrades,
+    ticker: ticker, ohlcv: ohlcv, trades: trades, orderBook: orderBook,
 };
 //# sourceMappingURL=requests.js.map

@@ -1,8 +1,9 @@
-interface Props {
+export interface Props {
     id: number;
     type: 'buy' | 'sell';
     stockTokenCode: number;
     cashTokenCode: number;
+    symbol: string;
     cashPrice: string;
     stockAmount: string;
     fulfilledStockAmount: string;
@@ -12,7 +13,7 @@ interface Props {
     maker: string;
     uniqueId: string;
 }
-declare class Order implements Props {
+export declare class Order implements Props {
     id: number;
     type: 'buy' | 'sell';
     stockTokenCode: number;
@@ -25,9 +26,21 @@ declare class Order implements Props {
     expiryTime: string;
     maker: string;
     uniqueId: string;
+    symbol: string;
     constructor(props: Partial<Props> & {
         type: 'buy' | 'sell';
     });
     setUniqueId(nonce: number): void;
+    ccxt(): {
+        id: string;
+        datetime: string;
+        timestamp: number;
+        lastTradeTimestamp: number;
+        symbol: string;
+        type: string;
+        side: "buy" | "sell";
+        price: string;
+        amount: string;
+    };
 }
 export default Order;

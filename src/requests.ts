@@ -1,10 +1,13 @@
 import axios from 'axios';
 
-import Market from './models/market';
-import Token from './models/token';
-import Trade from './models/trade';
+import { Market, Props as MarketProps } from './models/market';
+import { Token, Props as TokenProps } from './models/token';
+import { Trade, Props as TradeProps } from './models/trade';
+import { Ticker, Props as TickerProps } from './models/ticker';
 import TokenBalance from './models/token_balance';
-import Order from './models/order';
+import { Order, Props as OrderProps } from './models/order';
+import OHLCV from './models/ohlcv';
+import OrderBook from './models/orderBook';
 
 const API_URL = 'https://counter.market/api';
 
@@ -13,11 +16,20 @@ interface ApiOptions {
   auth?: { username: string, password: string };
 }
 
-async function makeRequest(method: 'get' | 'post' | 'put' | 'delete', url: string, data: any) {
+export interface Params {
+  limit?: number;
+  since?: number;
+  till?: number;
+  startId?: number;
+  step?: number;
+}
+
+async function makeRequest(method: 'get' | 'post' | 'put' | 'delete', url: string, data: any, params?: Params) {
   const baseUrl = customApiOptions.apiUrl || API_URL;
   const fullUrl = `${baseUrl}${url}`;
   const response = await axios.request({
     method,
+    params,
     url: fullUrl,
     data,
     auth: customApiOptions.auth,
@@ -33,12 +45,12 @@ function setCustomApiOptions(apiOptions: ApiOptions) {
 
 async function markets(): Promise<Market[]> {
   const response = await makeRequest('get', '/markets', {});
-  return response.items;
+  return response.items.map((market: MarketProps) => new Market(market));
 }
 
 async function tokens(): Promise<Token[]> {
   const response = await makeRequest('get', '/tokens?format=hex', {});
-  return response.items;
+  return response.items.map((token: TokenProps) => new Token(token));
 }
 
 async function createOrder(data: any) {
@@ -75,13 +87,13 @@ async function deposit(args: {
 }
 
 async function withdraw(args: {
-    address: string,
-    tokenCode: number,
-    amount: string,
-    withdrawFeeE5: string,
-    withdrawAddress: string,
-    withdrawNonce: number,
-    signature: string,
+  address: string,
+  tokenCode: number,
+  amount: string,
+  withdrawFeeE5: string,
+  withdrawAddress: string,
+  withdrawNonce: number,
+  signature: string,
 }) {
   const response = await makeRequest(
     'put',
@@ -95,19 +107,40 @@ async function balance(address: string): Promise<TokenBalance[]> {
   return response.items;
 }
 
-async function orders(address: string): Promise<Order[]> {
-  const response = await makeRequest('get', `/wallets/${address}/orders?format=float`, {});
+async function orders(address: string, params?: Params): Promise<Order[]> {
+  const response = await makeRequest('get', `/wallets/${address}/orders?format=float`, {}, params);
+  return response.items.map((order: OrderProps) => new Order(order));
+}
+
+async function walletTrades(address: string, params?: Params): Promise<Trade[]> {
+  const response = await makeRequest('get', `/wallets/${address}/trades?format=float`, {}, params);
+  return response.items.map((trade: TradeProps) => new Trade(trade));
+}
+
+async function ticker(symbol: string): Promise<Ticker> {
+  const response = await makeRequest('get', `/markets/${symbol}/ticker?format=float`, {});
+  return new Ticker(response, symbol);
+}
+
+async function orderBook(symbol: string, params: Params): Promise<OrderBook> {
+  const response = await makeRequest('get', `/markets/${symbol}/orderbook?format=float`, {}, params);
+  return new OrderBook(response);
+}
+
+async function ohlcv(symbol: string, params: Params): Promise<OHLCV> {
+  const response = await makeRequest('get', `/markets/${symbol}/ohlcv?format=float`, {}, params);
   return response.items;
 }
 
-async function walletTrades(address: string): Promise<Trade[]> {
-  const response = await makeRequest('get', `/wallets/${address}/trades?format=float`, {});
-  return response.items;
+async function trades(symbol: string, params: Params): Promise<Trade[]> {
+  const response = await makeRequest('get', `/markets/${symbol}/trades?format=float`, {}, params);
+  return response.items.map((trade: TradeProps) => new Trade(trade));
 }
 
 export default {
   setCustomApiOptions,
   markets, tokens, createOrder, cancelOrder, nonce,
   deposit, withdraw, balance, orders, walletTrades,
+  ticker, ohlcv, trades, orderBook,
 };
 export { ApiOptions };

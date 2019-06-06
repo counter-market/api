@@ -1,6 +1,6 @@
 {
   "name": "counter-market",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Package for working with counter market",
   "main": "dist/index.js",
   "scripts": {

@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var requests_1 = require("../requests");
-function fetchBalance(client) {
+function getBalance(client) {
     return __awaiter(this, void 0, void 0, function () {
         var address, tokenBalances;
         return __generator(this, function (_a) {
@@ -51,14 +51,19 @@ function fetchBalance(client) {
         });
     });
 }
-exports.fetchBalance = fetchBalance;
+exports.getBalance = getBalance;
 function fetchMyTrades(client) {
     return __awaiter(this, void 0, void 0, function () {
         var address, trades;
         return __generator(this, function (_a) {
-            address = client.getAddress();
-            trades = requests_1.default.walletTrades(address);
-            return [2 /*return*/, trades];
+            switch (_a.label) {
+                case 0:
+                    address = client.getAddress();
+                    return [4 /*yield*/, requests_1.default.walletTrades(address)];
+                case 1:
+                    trades = (_a.sent());
+                    return [2 /*return*/, trades];
+            }
         });
     });
 }

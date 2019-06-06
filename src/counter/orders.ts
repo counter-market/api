@@ -8,17 +8,17 @@ import Requests from '../requests';
 import Order from './../models/order';
 
 export async function createOrder(client: Client,
-                                 type: 'buy' | 'sell',
-                                 stockAmount: number,
-                                 cashPrice: number,
-                                 marketSymbol: string): Promise<Order> {
+                                  type: 'buy' | 'sell',
+                                  stockAmount: number,
+                                  cashPrice: number,
+                                  symbol: string): Promise<Order> {
   const CREATE_TITLE = 'counter.market order:';
   const address = client.getAddress();
 
   const markets = await Requests.markets();
-  const market = markets.find((m) => m.symbol === marketSymbol);
+  const market = markets.find((m) => m.symbol === symbol);
   if (!market) {
-    throw new Error(`Market ${marketSymbol} is not listed on counter`);
+    throw new Error(`Market ${symbol} is not listed on counter`);
   }
 
   const tokens = await Requests.tokens();
@@ -31,6 +31,7 @@ export async function createOrder(client: Client,
 
   const order: Order = new Order({
     type,
+    symbol,
     cashPrice: `${cashPrice}`,
     stockAmount: `${stockAmount}`,
     stockTokenCode: market.stockTokenCode,
@@ -84,7 +85,7 @@ export async function createOrder(client: Client,
     takerFeeE5: Config.TAKER_FEE_E5,
     maker: address,
     signature,
-    expiryTime: order.expiryTime,
+    expiryTime: Moment(order.expiryTime).unix(),
   };
 
   await Requests.createOrder(requestData);

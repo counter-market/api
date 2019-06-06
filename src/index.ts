@@ -4,7 +4,9 @@ import { getBalance, withdraw } from './counter/balance';
 
 import PrivateKeyClient from './client/private_key';
 
-export default {
+import CCXTCompatible from './ccxt_compatible';
+
+export {
   // orders
   createOrder,
   cancelOrder,
@@ -19,4 +21,7 @@ export default {
 
   // clients
   PrivateKeyClient,
+
+  // ccxt
+  CCXTCompatible,
 };
