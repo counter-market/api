@@ -39,7 +39,7 @@ declare class Counter {
         price: string;
         amount: string;
     }>;
-    fetchMyTrades(): Promise<Promise<{
+    fetchMyTrades(): Promise<{
         id: number;
         timestamp: string;
         datetime: string;
@@ -49,7 +49,7 @@ declare class Counter {
         takerOrMaker: string;
         price: string;
         amount: string;
-    }>[]>;
+    }[]>;
     withdraw(code: string, amount: number): Promise<void>;
     fetchMarkets(): Promise<{
         symbol: string;

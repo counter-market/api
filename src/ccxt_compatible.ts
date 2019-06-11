@@ -56,7 +56,7 @@ class Counter {
     }
 
     public async fetchMyTrades() {
-        return (await CounterApi.fetchMyTrades(this.client)).map(async (trade) => await trade.ccxt());
+        return Promise.all((await CounterApi.fetchMyTrades(this.client)).map(async (trade) => await trade.ccxt()));
     }
 
     public async withdraw(code: string, amount: number) {

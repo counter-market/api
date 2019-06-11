@@ -119,16 +119,19 @@ var Counter = /** @class */ (function () {
     };
     Counter.prototype.fetchMyTrades = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var _a, _b;
             var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, CounterApi.fetchMyTrades(this.client)];
-                    case 1: return [2 /*return*/, (_a.sent()).map(function (trade) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, trade.ccxt()];
-                                case 1: return [2 /*return*/, _a.sent()];
-                            }
-                        }); }); })];
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _b = (_a = Promise).all;
+                        return [4 /*yield*/, CounterApi.fetchMyTrades(this.client)];
+                    case 1: return [2 /*return*/, _b.apply(_a, [(_c.sent()).map(function (trade) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, trade.ccxt()];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); })])];
                 }
             });
         });
